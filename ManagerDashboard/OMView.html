@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en" ng-app="Dashboard">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>Dashboard</title>
+
+		<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css"/>
+		<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css"/>
+		<link rel="stylesheet" href="css/dashboard/dashboard.css"/>
+
+		<!-- SCRIPTS -->
+		<script src="lib/angular/angular.js"></script>
+		<script src="lib/angular-cookies/angular-cookies.js"></script>
+		<script src="js/dashboard.js"></script>
+		<script src="lib/angular-bootstrap/ui-bootstrap.js"></script>
+		<script src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+		<script src="lib/angular-ui-router/angular-ui-router.js"></script>
+		<!-- SCRIPTS -->
+
+		<!-- High charts Scripts-->
+		<script src="lib/jquery.min.js"></script>
+		<script src="lib/highcharts.js"></script>
+		<script src="lib/highcharts-more.js"></script>
+		<!-- High charts Scripts-->
+		
+	</head>
+	
+	<body>
+		<div id="content-wrapper">
+			<div class="page-content">
+
+				<!-- Header Bar -->
+
+				<div class="row header">
+					<div class="page">
+						<div class="user pull-right">
+						
+							<div class="item dropdown">
+								<a href="#" class="dropdown-toggle">
+									<img src="img/User.jpg">
+								</a>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li class="dropdown-header">Joe Bloggs</li>
+									<li class="divider"></li>
+									<li class="link">
+										<a href="#">Profile</a>
+									</li>
+									<li class="link">
+										<a href="#">Logout</a>
+									</li>
+								</ul>
+							</div>
+							
+							<div class="item dropdown">
+								<a href="#" class="dropdown-toggle">
+									<img src="img/shopNextLogo1.jpg">
+								</a>
+							</div>
+							
+							<div class="item dropdown" style="width: 100px; margin-right: 0px; margin-left: -24px;>
+								<a href="#" class="dropdown-toggle" >
+									<img src="img/Deloitte_Logo.png" style="width: 75px;">
+								</a>
+							</div>
+					
+						</div>
+						
+						<div class="meta">
+							<div class="page" style="width: 1225px;">
+								<font class="fa-lg" color="white">Hey There !!!</font>
+							</div>
+							<div class="breadcrumb-links" style="width: 1225px;">
+								<font class="fa" color="white">Welcome to the Next Generation InStore Operations Visibility Experience.</font>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+
+				<!-- End Header Bar -->
+
+				<!-- Main Content -->
+				<section data-ui-view></section>
+				
+			</div><!-- End Page Content -->
+		</div><!-- End Content Wrapper -->
+
+		<script type="text/ng-template" id="dashboard.html">
+		
+			<div class="row alerts-container" data-ng-controller="AlertsCtrl" data-ng-show="alerts.length">
+				<div class="col-xs-12">
+					<alert data-ng-repeat="alert in alerts" type="{{alert.messageType}}" close="closeAlert($index)">{{alert.message}} : {{alert.additionalInfo}}</alert>
+				</div>
+			</div>
+
+			<div class="row" data-ng-controller="HeatMapCtrl">
+				<div class="col-lg-3 col-md-6 col-xs-12">
+					<div class="widget">
+						<div class="widget-body">
+							<div class="widget-icon-cart pull-left"></div>
+							<div class="widget-content pull-left">
+								<div class="title">{{totalCustomersOnFloor}}</div>
+								<div class="comment">Customers In Shop</div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-lg-3 col-md-6 col-xs-12">
+					<div class="widget">
+						<div class="widget-body">
+							<div class="widget-icon-grocery pull-left"></div>
+							<div class="widget-content pull-left">
+								<div class="title">{{totalCustomersInSection1}}</div>
+								<div class="comment">Groceries Section</div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-lg-3 col-md-6 col-xs-12">
+					<div class="widget">
+						<div class="widget-body">
+							<div class="widget-icon-kitchenware pull-left"></div>
+							<div class="widget-content pull-left">
+								<div class="title">{{totalCustomersInSection2}}</div>
+								<div class="comment">Kitchenware Section</div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="spacer visible-xs"></div>
+				<div class="col-lg-3 col-md-6 col-xs-12">
+					<div class="widget">
+						<div class="widget-body">
+							<div class="widget-icon-hardware pull-left"></div>
+							<div class="widget-content pull-left">
+								<div class="title">{{totalCustomersInSection3}}</div>
+								<div class="comment">Hardware Section</div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+	
+			<div class="row">
+		
+				<!-- Most Sold Products Start -->
+				<!--
+				<div class="col-lg-6" data-ng-controller="MostSoldCtrl">
+					<div class="widget">
+						<div class="widget-header">
+							Most Sold Products
+						</div>
+						<div class="widget-body medium no-padding">
+							<div class="table-responsive">
+								<div>    
+									<div class="list-group">
+										<table class="table table-hover">
+											<thead>
+												<tr>
+													<th>Item ID</th>
+													<th>Item Name</th>
+													<th>Total Sold Quantity</th> 
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="mostSold in mostSoldList">
+													<td>{{mostSold.itemId}}</td>
+													<td>{{mostSold.itemName}}</td>
+													<td>{{mostSold.totalSalesQty}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				-->
+				
+				<div class="col-lg-6" ng-controller="MostSoldCtrl">
+					<div class="widget">
+						<div class="widget-header">
+							Top Selling Products
+						</div>
+						<div class="widget-body large no-padding">		
+							<div class="hc-pie" items="mostSoldUpdated"></div>
+						</div>
+					</div>
+				</div>
+				<!-- Most Sold Products End -->
+			  
+				<!-- Products Low in Stock Start -->
+				<!--
+				<div class="col-lg-6" data-ng-controller="ProductsLowStockCtrl">
+					<div class="widget">
+						<div class="widget-header">
+							Attention - Products low on stock
+						</div>
+						<div class="widget-body medium no-padding">
+							<div class="table-responsive">
+								<div>    
+									<div class="list-group">
+										<table class="table table-hover">
+											<thead>
+												<tr>
+													<th>Item Id</th>
+													<th>Item Name</th>
+													<th>Stock Available</th> 
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="itemLowInStock in itemsLowInStock">
+													<td>{{itemLowInStock[0]}}</td>
+													<td>{{itemLowInStock[1]}}</td>
+													<td>{{itemLowInStock[2]}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				-->
+				
+				<div class="col-lg-6" ng-controller="ProductsLowStockCtrl">
+					<div class="widget">
+						<div class="widget-header">
+							Attention - Products low on stock
+						</div>
+						<div class="widget-body large no-padding">		
+							<div class="hc-column" id="columnChart"></div>
+						</div>
+					</div>
+				</div>
+				<!-- Products Low in Stock End -->
+				
+			</div>
+			
+			<div class="row">
+			
+				<!-- Top Spender Widget Start-->
+				<div class="col-lg-6a" data-ng-controller="SpendersCtrl">
+					<div class="widget">
+						<div class="widget-header">
+							Top Spenders
+						</div>
+						<div class="widget-body medium no-padding">
+							<div class="table-responsive">
+								<div>    
+									<div class="list-group">
+										<table class="table table-hover">
+											<thead>
+												<tr>
+													<th></th>
+													<th>Customer</th>
+													<th>Total Bill</th> 
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="topBuyer in topBuyerList">
+													<td><img src="img/User.jpg" style="width:20px;" style="height:20px;"></td>
+													<td>{{topBuyer.customerName}}</td>
+													<td>{{topBuyer.totalBill | currency}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Top Spender Widget end-->
+	  	
+			</div>
+			
+		</script>
+		
+	</body>
+	
+</html>

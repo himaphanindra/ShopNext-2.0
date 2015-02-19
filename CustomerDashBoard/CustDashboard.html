@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="customerdashboard">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>Dashboard</title>
+
+		<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css"/>
+		<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css"/>
+		<link rel="stylesheet" href="css/dashboard/dashboard.css"/>
+		
+		<!-- Carousel - Start -->
+		<link rel="stylesheet" href="carousel/bootstrap.min.css">
+		<link rel="stylesheet" href="carousel/bootstrap-theme.min.css">
+		<script src="carousel/jquery.min.js"></script>
+		<script src="carousel/bootstrap.min.js"></script>
+		<!-- Carousel - End -->
+		
+		<!-- SCRIPTS -->		
+		<script src="lib/angular/angular.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/RTcontroller.js"></script>
+		<script src="lib/angular-cookies/angular-cookies.js"></script>
+		<script src="lib/angular-bootstrap/ui-bootstrap.js"></script>
+		<script src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+		<script src="lib/angular-ui-router/angular-ui-router.js"></script>		
+		<!-- SCRIPTS -->
+
+	</head>
+	
+	<body>
+		<div id="content-wrapper">
+			<div class="page-content">
+				
+				<!-- Header Bar -->
+				<div class="row header">
+					<div class="page" data-ng-controller="TopRibbonCtrl">
+						<div class="user pull-right">
+						
+							<div class="item dropdown">
+								<a href="#" class="dropdown-toggle">
+									<img src="img/User.jpg">
+								</a>
+							</div>
+							
+							<div class="item dropdown">
+								<a href="#" class="dropdown-toggle">
+									<img src="img/shopNextLogo1.jpg">
+								</a>
+							</div>
+							
+							<div class="item dropdown" style="width: 100px; margin-right: 0px; margin-left: -24px;>
+								<a href="#" class="dropdown-toggle" >
+									<img src="img/Deloitte_Logo.png" style="width: 75px;">
+								</a>
+							</div>
+					
+						</div>
+						<div class="meta">
+							<div class="page" style="width: 1225px;">
+								<font class="fa-lg" color="white">
+									Welcome back {{customer.customerName}} !
+								</font>						
+							</div>
+							<div class="breadcrumb-links" style="width: 1225px;">
+								<font class="fa" color="white">Welcome to the Next Generation InStore Shopping Experience.</font>
+							</div>	
+						</div>							
+					</div>
+				</div>
+				<!-- End Header Bar -->
+
+				<!-- Main Content -->
+				<section data-ui-view></section>
+					
+			</div><!-- End Page Content -->
+		</div><!-- End Content Wrapper -->
+
+		<!-- <script type="text/ng-template" id="dashboard.html"> -->
+		
+		<div class="row">
+
+			<!-- Current Transactions widget Start-->
+			<div class="col-lg-6" data-ng-controller="BillCtrl">
+				<div class="widget">
+					<div class="widget-header">
+						Current Transaction
+					</div>
+					<div class="widget-body medium no-padding">
+						<div class="table-responsive">
+							<table class="table table-bordered table-hover table-striped" >
+									
+								<tbody>
+									<tr data-ng-repeat="billItem in billItems">
+									  <td>{{billItem.itemName}}</td>
+									  <td>X {{billItem.itemQty}}</td>
+									  <td align="right">{{billItem.netPrice|currency}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<b ng:show="billItems.length" align="right">Order: {{billAmount|currency}}</b>
+						<br/>
+						<br/>
+						<center><button ng:show="billItems.length" class="btn btn-sm btn-info pull-center" style="margin-top:10px;" data-ng-click="signOut()">PAY!</button></center>
+					</div>
+				</div>
+			</div>
+			<!-- Current Transactions widget end-->
+	
+			<!-- Notification Log Start -->
+			<div class="col-lg-6">
+				<div class="widget">
+					<div class="widget-header">
+						Notification Panel
+					</div>
+					<div class="widget-body medium no-padding">
+						<div class="row alerts-container" data-ng-controller="AlertsCtrl" data-ng-show="alerts.length">
+							  
+								 <div class="col-xs-12">
+											<alert data-ng-repeat="alert in alerts" type="{{alert.messageType}}" close="closeAlert($index)">
+												{{alert.message}} : {{alert.additionalInfo}}
+											</alert>
+								</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Notification Log End -->
+		  
+		</div>
+		
+		<div class="row">
+			
+			<!-- Transaction Log Start -->
+			<div class="col-lg-6" data-ng-controller="TransactionCtrl">
+				<div class="widget">
+					<div class="widget-header">
+						Past Transactions
+					</div>
+					<div class="widget-body medium no-padding">
+						<accordion close-others="oneAtATime">
+							<accordion-group heading="Bill Date: {{transactionLog.billDate | date:'medium'}} " ng-repeat="transactionLog in transactionLogs">
+								Bill Amount: {{transactionLog.billAmount|currency}}
+							</accordion-group>
+						</accordion>	
+					</div>
+				</div>
+			</div>
+			<!-- Transaction Log End -->
+			
+			<div class="col-lg-6">
+				<div class="widget">
+						<div class="widget-header"> Products on Fire 
+						</div>
+						<div class="widget-body medium no-padding">
+							<div id="myCarousel" class="carousel slide" data-interval="3000" data-ride="carousel">
+								<div class="carousel-inner" style="height: 247px;">
+									<div class="active item">
+										<!-- <h2>Slide 1</h2> -->
+										<img src="carousel/img/0.jpg">
+									</div>
+									<div class="item">
+										<!-- <h2>Slide 2</h2> -->
+										<img src="carousel/img/1.jpg">
+									</div>
+									<div class="item">
+										<!-- <h2>Slide 3</h2> -->
+										<img src="carousel/img/2.jpg">
+									</div>
+									<div class="item">
+										<!-- <h2>Slide 3</h2> -->
+										<img src="carousel/img/3.jpg">
+									</div>
+									<div class="item">
+										<!-- <h2>Slide 3</h2> -->
+										<img src="carousel/img/4.jpg">
+									</div>
+									<div class="item">
+										<!-- <h2>Slide 3</h2> -->
+										<img src="carousel/img/5.jpg">
+									</div>
+									<div class="item">
+										<!-- <h2>Slide 3</h2> -->
+										<img src="carousel/img/6.jpg">
+									</div>
+									<div class="item">
+										<!-- <h2>Slide 3</h2> -->
+										<img src="carousel/img/7.jpg">
+									</div>
+									<div class="item">
+										<!-- <h2>Slide 3</h2> -->
+										<img src="carousel/img/8.jpg">
+									</div>
+									<div class="item">
+										<!-- <h2>Slide 3</h2> -->
+										<img src="carousel/img/9.jpg">
+									</div>
+									<div class="item">
+										<!-- <h2>Slide 3</h2> -->
+										<img src="carousel/img/10.jpg">
+									</div>
+								</div>
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>			
+		<!-- </script> -->
+		
+	</body>	
+</html>
